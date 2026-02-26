@@ -1,7 +1,4 @@
 require("dotenv").config();
-console.log("OMDB KEY FROM SERVER:", process.env.OMDB_API_KEY);
-
-require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 
@@ -88,11 +85,8 @@ init().then(() => {
     res.json(results);
   });
 
- const PORT = process.env.PORT || 3000;
-
-const PORT = process.env.PORT || 3000;
+  const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
   console.log("Server running on port", PORT);
-});
 });
