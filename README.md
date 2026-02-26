@@ -1,9 +1,6 @@
 # 🎬 Movie Recommendation System
 
-A full-stack Movie Recommendation Web App built using Collaborative Filtering on the MovieLens dataset.
 
-🔗 Live Demo:  
-https://movie-recommendations-ksi7.onrender.com
 
 ---
 
