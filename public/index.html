@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Movie Recommendation System</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial;
+      background: linear-gradient(-45deg, #141414, #2c2c2c, #000);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      color: white;
+      text-align: center;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    header {
+      background: red;
+      padding: 15px;
+      font-size: 22px;
+    }
+
+    .container {
+      margin: 30px auto;
+      max-width: 400px;
+    }
+
+    input, select, button {
+      width: 100%;
+      padding: 10px;
+      margin: 5px 0;
+      border-radius: 5px;
+      border: none;
+    }
+
+    button {
+      background: red;
+      color: white;
+      cursor: pointer;
+    }
+
+    .results {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .card {
+      background: #222;
+      width: 180px;
+      border-radius: 10px;
+      padding: 10px;
+    }
+
+    img {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>🎬 Movie Recommendation System</header>
+
+<div class="container">
+  <input type="text" id="movieName" placeholder="Enter movie name">
+  <select id="genre">
+    <option>All</option>
+    <option>Animation</option>
+    <option>Adventure</option>
+    <option>Romance</option>
+    <option>Sci-Fi</option>
+    <option>Drama</option>
+    <option>Action</option>
+  </select>
+  <button onclick="getRecommendations()">Recommend</button>
+</div>
+
+<div class="results" id="results"></div>
+
+<script>
+async function getRecommendations() {
+  const movie = document.getElementById("movieName").value;
+  const genre = document.getElementById("genre").value;
+
+  const response = await fetch("/recommend", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ movie, genre })
+  });
+
+  const data = await response.json();
+  console.log("API response:", data);
+  const container = document.getElementById("results");
+  container.innerHTML = "";
+
+  if (!Array.isArray(data) || data.length === 0) {
+    container.innerHTML = "<p>No recommendations found.</p>";
+    return;
+  }
+
+  data.forEach(item => {
+    const card = document.createElement("div");
+    card.className = "card";
+
+    const poster = item.poster
+      ? item.poster
+      : "https://via.placeholder.com/300x450?text=No+Image";
+
+    card.innerHTML = `
+      <img src="${poster}">
+      <h4>${item.title}</h4>
+      <p>⭐ ${item.rating}</p>
+    `;
+
+    container.appendChild(card);
+  });
+}
+</script>
+
+</body>
+</html>
